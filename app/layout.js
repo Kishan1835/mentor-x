@@ -8,7 +8,7 @@ const inter = Inter({ subset: ["latin"] });
 
 
 export const metadata = {
-  title: " Mentor-X AI-driven career mentorship",
+  title: " Mentor-X    AI-driven career mentorship ",
   description: "",
 };
 
