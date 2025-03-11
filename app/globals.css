@@ -75,7 +75,7 @@ body {
 
 @layer utilities {
   .gradient {
-    @apply bg-gradient-to-b from-gray-400 via-gray-200 to-gray-600;
+    @apply bg-gradient-to-b from-[#FB7185] via-[#34D399] to-[#7C3AED];
   }
 
   .gradient-title {
@@ -125,7 +125,7 @@ body {
 
 @layer utilities {
   .gradient {
-    @apply bg-gradient-to-b from-gray-400 via-gray-200 to-gray-600
+    @apply bg-gradient-to-b from-[#d3662f] via-[#057d3f] to-[#14087e];
   }
 
   .gradient-title {
@@ -138,6 +138,7 @@ body {
   perspective: 1000px;
 
 }
+
 .hero-image {
   transform: rotateX(15deg) scale(1);
   transition: transform 0.5s ease-out;
