@@ -118,14 +118,14 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100%;  
   height: 100%;
   background: radial-gradient(circle, transparent, rgba(0, 0, 0, 0.9));
 }
 
 @layer utilities {
   .gradient {
-    @apply bg-gradient-to-b from-[#d3662f] via-[#057d3f] to-[#14087e];
+    @apply bg-gradient-to-b from-[#d3662f] via-[#c8ccca] to-[#12d95e];
   }
 
   .gradient-title {
