@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Mentor-X
+
+Mentor-X is an AI-driven career advancement platform designed to help users enhance their professional skills and secure their dream jobs. The platform offers personalized guidance, interview preparation, and industry insights tailored to individual career paths.
+
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [Features](#features)
+- [How It Works](#how-it-works)
+- [Technologies Used](#technologies-used)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Getting Started
 
-First, run the development server:
+To get started with Mentor-X, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/mentor-x.git
+   cd mentor-x
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Install dependencies:**
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+3. **Set up your environment variables:**
+   Create a `.env` file in the root directory and add your database URL:
+   ```
+   DATABASE_URL=your_database_url
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-## Learn More
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application in action.
 
-To learn more about Next.js, take a look at the following resources:
+## Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **AI-Driven Career Insights:** Receive tailored career guidance powered by cutting-edge AI technology.
+- **Comprehensive Interview Preparation:** Engage with job-specific questions and receive immediate feedback to enhance your skills.
+- **Up-to-Date Industry Analysis:** Stay informed with the latest industry trends, salary insights, and market evaluations.
+- **Intelligent Resume Builder:** Create ATS-friendly resumes with the help of AI technology.
+- **User Testimonials:** Read success stories from users who have benefited from the platform.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## How It Works
 
-## Deploy on Vercel
+1. **Professional Onboarding:** Share your industry and expertise for personalized guidance.
+2. **Craft Your Documents:** Create ATS-optimized resumes and compelling cover letters.
+3. **Prepare for Interviews:** Practice with AI-powered mock interviews tailored to your role.
+4. **Track Your Progress:** Monitor improvements with detailed performance analytics.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Technologies Used
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Frontend:** Next.js, React, Tailwind CSS
+- **Backend:** Node.js, Prisma, PostgreSQL
+- **Authentication:** Clerk
+- **Deployment:** Vercel
+
+## Contributing
+
+Contributions are welcome! If you have suggestions for improvements or new features, please open an issue or submit a pull request.
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/YourFeature`).
+3. Make your changes and commit them (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature/YourFeature`).
+5. Open a pull request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+Feel free to customize this README further to fit your project's specific needs and details!
