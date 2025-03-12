@@ -75,7 +75,7 @@ body {
 
 @layer utilities {
   .gradient {
-    @apply bg-gradient-to-b from-[#FB7185] via-[#34D399] to-[#7C3AED];
+    @apply bg-gradient-to-b from-[#dd542a] via-[#34D399] to-[#7C3AED];
   }
 
   .gradient-title {
@@ -88,7 +88,6 @@ body {
 }
 
 .hero-image {
-  /* transform: rotateX(20deg) scale(0.9) translateY(-50); */
   transform: rotateX(15deg) scale(1);
   transition: transform 0.5s ease-out;
   will-change: transform;
@@ -123,9 +122,9 @@ body {
   background: radial-gradient(circle, transparent, rgba(0, 0, 0, 0.9));
 }
 
-@layer utilities {
+@layer utilities7\ {
   .gradient {
-    @apply bg-gradient-to-b from-[#d3662f] via-[#c8ccca] to-[#12d95e];
+    @apply bg-gradient-to-b from-[#e05a16] via-[#c8ccca] to-[#12d95e];
   }
 
   .gradient-title {
