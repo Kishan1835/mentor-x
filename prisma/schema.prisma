@@ -22,15 +22,92 @@ model User {
   industry    String?
 
   // combining the industry-subindustry
-  industryInsight industryInsight? @relation(fields: [industry], references: [industry])
-  createdAt       DateTime         @default(now())
-  upadtedAt       DateTime         @updatedAt
+  industryInsight IndustryInsights? @relation(fields: [industry], references: [industry])
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
 
   // profile fiels 
   bio        String?
   experience Int? //exp years 
   skills     String[] // array in skills 
+
+  assesments  Assesment[]
+  resume      Resume[]
+  coverLetter CoverLetter[]
 }
 
-model industryInsights {
+model Assesment {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  quizScore       Float
+  questions       Json[]
+  category        String
+  improvementTips String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Resume {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  content   String   @db.Text // Markdown format content
+  atsScore  Float?
+  feedback  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+}
+
+model CoverLetter {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  content        String // Markdown content
+  jobDescription String?
+  companyName    String? // Name of the company you are applying to 
+  jobTitle       String // Position applying for 
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model IndustryInsights {
+  id       String @id @default(cuid())
+  industry String @unique // the industry this data belongs to 
+
+  // User in this industry 
+  users User[]
+
+  // Salary range
+  salaryrange Json[] // it will be an array of the 
+
+  // industry trends 
+  growthRate  Float
+  demandLevel DemanLevel
+  topskills   String[]
+
+  // Market conditions
+  marketOutlook MarketOutlook
+  keyTrends     String
+
+  // Suggestions for the user 
+  recommendedSkills String[]
+  lastUpdated       DateTime @default(now())
+  nextUpdate        DateTime
+
+  @@index([industry])
+}
+
+enum DemanLevel {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum MarketOutlook {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
 }
