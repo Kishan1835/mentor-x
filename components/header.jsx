@@ -2,6 +2,8 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { checkUser } from "@/lib/checkUser";
+
 import {
   ChevronDown,
   FileText,
@@ -14,18 +16,18 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-const Header = () => {
+const Header = async () => {
+  await checkUser();
+
   return (
     <header className="fixed top-0 w-full border-b bg-background/80 backdrop-blur-md z-50 supports-[backdrop-filter]:bg-background/60 items-baseline">
       <nav className="container  mx-auto  h-16 flex items-center justify-between ">
         <Link href="/">
           <Image
-            src="/mento-X-Logo.png"
+            src="/mentor-X-Logo.png"
             alt="logo"
             width={65}
             height={60}
@@ -46,9 +48,8 @@ const Header = () => {
               <DropdownMenuTrigger>
                 <Button>
                   <StarIcon className="h-4 w-4" />
-                  <span className="hidden md:block"> Growth Tools</span>
-                  <ChevronDown className="h-4 w-4" />
-                </Button>
+                  <span className="hidden md:block">Open Menu</span>
+                  <ChevronDown className="h-4 w-4" />                </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem>
