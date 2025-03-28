@@ -26,12 +26,12 @@ model User {
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 
-  // profile fiels 
+  // profile fields 
   bio        String?
   experience Int? //exp years 
   skills     String[] // array in skills 
 
-  assesments  Assesment[]
+  assessments Assesment[]
   resume      Resume[]
   coverLetter CoverLetter[]
 }
