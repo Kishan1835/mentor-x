@@ -75,7 +75,7 @@ body {
 
 @layer utilities {
   .gradient {
-    @apply bg-gradient-to-b from-[#dd542a] via-[#34D399] to-[#7C3AED];
+    @apply bg-gradient-to-b from-[#4de7ae]  to-[#253181];
   }
 
   .gradient-title {
