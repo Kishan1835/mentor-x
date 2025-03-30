@@ -45,7 +45,7 @@ const Header = async () => {
             </Link>
 
             <DropdownMenu>
-              <DropdownMenuTrigger>
+              <DropdownMenuTrigger asChild>
                 <Button>
                   <StarIcon className="h-4 w-4" />
                   <span className="hidden md:block">Open Menu</span>
@@ -82,9 +82,9 @@ const Header = async () => {
           </SignedIn>
 
           <SignedOut>
-            <SignInButton>
-              <Button variant="outline">Sign In</Button>
-            </SignInButton>
+            <SignInButton> 
+              <Button variant="outline">Sign In</Button> 
+             </SignInButton> 
           </SignedOut>
 
           <SignedIn>

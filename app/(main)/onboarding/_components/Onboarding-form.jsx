@@ -48,7 +48,6 @@ const OnboardingForm = ({ industries }) => {
         formState: { errors },
         setValue,
         watch
-
     } = useForm({
         resolver: zodResolver(onboardingSchema)
     })
@@ -186,8 +185,15 @@ const OnboardingForm = ({ industries }) => {
                             )}
                         </div>
 
-                        <Button className="w-full" type="submit">
-                            Complete Profile
+                        <Button className="w-full" type="submit" disabled={updateLoading}>
+                            {updateLoading ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Saving...
+                                </>
+                            ) : (
+                                "Complete Profile"
+                            )}
                         </Button>
                     </form>
                 </CardContent>
