@@ -3,6 +3,8 @@
 import { db } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
+import { generateAIInsights } from "./dashboard";
+
 
 
 export async function updateUser(data) {
@@ -10,10 +12,10 @@ export async function updateUser(data) {
   if (!userId) throw new Error("Unauthorized");
 
   // console.log('THis is to test ', userId);
-  
+
 
   const user = await db.user.findUnique({
-    where: { clerkUserid: userId }, 
+    where: { clerkUserid: userId },
   });
 
   if (!user) throw new Error("User not found");
@@ -28,22 +30,17 @@ export async function updateUser(data) {
             industry: data.industry,
           },
         });
+        console.log("Received industry:", data.industry);
 
         // If industry doesn't exist, create it with default values
         if (!industryInsight) {
-          // Remove the generateAIInsights call if it's not properly defined
-          // const insights = await generateAIInsights(data.industry);
+          const insights = await generateAIInsights(data.industry);
 
-          industryInsight = await tx.industryInsights.create({
+          industryInsight = await db.industryInsights.create({
             data: {
               industry: data.industry,
-              salaryrange: [], 
-              growthRate: 0,
-              demandLevel: "MEDIUM", 
-              topskills: [], 
-              marketOutlook: "NEUTRAL",
-              keyTrends: "", 
-              recommendedSkills: [],
+              ...insights,
+              demandLevel: insights.demandLevel.toUpperCase(), //  Convert string to enum format
               nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             },
           });
