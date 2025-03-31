@@ -31,12 +31,12 @@ model User {
   experience Int? //exp years 
   skills     String[] // array in skills 
 
-  assessments Assesment[]
-  resume      Resume[]
+  assessments Assessment[]
+  resume      Resume?
   coverLetter CoverLetter[]
 }
 
-model Assesment {
+model Assessment {
   id              String   @id @default(cuid())
   userId          String
   user            User     @relation(fields: [userId], references: [id])
@@ -52,7 +52,7 @@ model Assesment {
 
 model Resume {
   id        String   @id @default(cuid())
-  userId    String
+  userId    String   @unique
   user      User     @relation(fields: [userId], references: [id])
   content   String   @db.Text // Markdown format content
   atsScore  Float?
@@ -67,10 +67,13 @@ model CoverLetter {
   user           User     @relation(fields: [userId], references: [id])
   content        String // Markdown content
   jobDescription String?
-  companyName    String? // Name of the company you are applying to 
+  companyName    String // Name of the company you are applying to 
   jobTitle       String // Position applying for 
+  status         String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+
+  @@index([userId])
 }
 
 model IndustryInsights {
@@ -85,12 +88,12 @@ model IndustryInsights {
 
   // industry trends 
   growthRate  Float
-  demandLevel DemanLevel
+  demandLevel DemandLevel
   topskills   String[]
 
   // Market conditions
   marketOutlook MarketOutlook
-  keyTrends     String
+  keyTrends     String[]
 
   // Suggestions for the user 
   recommendedSkills String[]
@@ -100,7 +103,7 @@ model IndustryInsights {
   @@index([industry])
 }
 
-enum DemanLevel {
+enum DemandLevel {
   HIGH
   MEDIUM
   LOW
