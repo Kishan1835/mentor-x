@@ -41,7 +41,7 @@ export async function getIndustryInsights() {
     if (!userId) throw new Error("Unauthorized");
 
     const user = await db.user.findUnique({
-        where: { clerkUserId: userId },
+        where: { clerkUserid: userId },
         include: {
             industryInsight: true,
         },

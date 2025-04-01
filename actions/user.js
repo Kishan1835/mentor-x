@@ -30,7 +30,7 @@ export async function updateUser(data) {
             industry: data.industry,
           },
         });
-        console.log("Received industry:", data.industry);
+        // console.log("Received industry:", data.industry);
 
         // If industry doesn't exist, create it with default values
         if (!industryInsight) {
