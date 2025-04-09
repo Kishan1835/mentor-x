@@ -2,19 +2,33 @@
 
 import React from 'react'
 import { format, formatDistanceToNow } from "date-fns"
-import { Badge } from '@/components/ui/badge'
 import {
+    BriefcaseIcon,
     LineChart,
+    TrendingUp,
     TrendingDown,
-    TrendingUp
-} from 'lucide-react'
+    Brain,
+} from "lucide-react";
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    Rectangle,
+} from "recharts";
 import {
     Card,
     CardContent,
+    CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { OutdentIcon } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Progress } from "@/components/ui/progress";
+
 
 
 export const DashboardView = ({ insights }) => {
@@ -58,7 +72,7 @@ export const DashboardView = ({ insights }) => {
     }
 
     const OutlookIcon = getMarketOutlookInfo(insights.marketOutlook).icon;
-    const OutlookColor = getMarketOutlookInfo(insights.marketOutlook).color
+    const outlookColor = getMarketOutlookInfo(insights.marketOutlook).color;
 
     // it will show when it was last updated
     const lastUpdatedDate = insights.lastUpdated ? format(new Date(insights.lastUpdated), "dd/MM/yyyy") : "N/A";
@@ -77,7 +91,7 @@ export const DashboardView = ({ insights }) => {
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Market Outlook</CardTitle>
-                    <OutlookIcon className={`h-4 w-4${OutlookColor}`} />
+                    <OutlookIcon className={`h-4 w-4 ${outlookColor}`} />
                 </CardHeader>
                 <CardContent>
                     <div className='text-2xl font-bold'>{insights.marketOutlook}
@@ -85,37 +99,85 @@ export const DashboardView = ({ insights }) => {
                     <p className='text-xs text-muted-foreground'>Next Update {nextUpdateDistance}</p>
                 </CardContent>
             </Card>
+
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Market Outlook</CardTitle>
-                    <OutlookIcon className={`h-4 w-4${OutlookColor}`} />
+                    <CardTitle className="text-sm font-medium">Industry Growth</CardTitle>
+                    <TrendingUp className='h-4 w-4 text-muted-foreground' />
                 </CardHeader>
                 <CardContent>
-                    <div className='text-2xl font-bold'>{insights.marketOutlook}
+                    <div className='text-2xl font-bold'>{insights.growthRate.toFixed(1)}%
                     </div>
-                    <p className='text-xs text-muted-foreground'>Next Update {nextUpdateDistance}</p>
+                    <Progress value={insights.growthRate} className="mt-2" />
                 </CardContent>
             </Card>
+
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Market Outlook</CardTitle>
-                    <OutlookIcon className={`h-4 w-4${OutlookColor}`} />
+                    <CardTitle className="text-sm font-medium">Demand Level</CardTitle>
+                    <BriefcaseIcon className='h-4 w-4 text-muted-foreground' />
                 </CardHeader>
                 <CardContent>
-                    <div className='text-2xl font-bold'>{insights.marketOutlook}
+                    <div className='text-2xl font-bold'>{insights.demandLevel}
                     </div>
-                    <p className='text-xs text-muted-foreground'>Next Update {nextUpdateDistance}</p>
+                    <div className={`h-2 w-full rounder-full mt-2 
+                    ${getDemandLevelColor(
+                        insights.demandLevel
+                    )}`}></div>
+
                 </CardContent>
             </Card>
+
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Market Outlook</CardTitle>
-                    <OutlookIcon className={`h-4 w-4${OutlookColor}`} />
+                    <CardTitle className="text-sm font-medium">Top Skills</CardTitle>
+                    <Brain className='h-4 w-4 text-muted-foreground' />
                 </CardHeader>
                 <CardContent>
-                    <div className='text-2xl font-bold'>{insights.marketOutlook}
+                    <div className='flex flex-wrap gap-1'>
+                        {insights.topskills.map((skill) => (
+                            <Badge key={skill} variant="secondary">
+                                {skill}
+                            </Badge>
+                        ))}
                     </div>
-                    <p className='text-xs text-muted-foreground'>Next Update {nextUpdateDistance}</p>
+                </CardContent>
+            </Card>
+
+
+            <Card>
+                <CardHeader >
+                    <CardTitle >Salary Ranges by role</CardTitle>
+                    <CardDescription>
+                        Displaying minimum, median, and maximum salaries (in thousands)
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className='h-[400px]'>
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart
+                                width={500}
+                                height={300}
+                                data={salaryData}
+                                margin={{
+                                    top: 5,
+                                    right: 30,
+                                    left: 20,
+                                    bottom: 5,
+                                }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Bar
+                                    dataKey="pv"
+                                    fill="#8884d8"
+                                    activeBar={<Rectangle fill="pink" stroke="blue" />} />
+                                <Bar dataKey="uv" fill="#82ca9d" activeBar={<Rectangle fill="gold" stroke="purple" />} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
                 </CardContent>
             </Card>
 
