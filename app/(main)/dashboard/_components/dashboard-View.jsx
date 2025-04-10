@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/card"
 import { Badge } from '@/components/ui/badge'
 import { Progress } from "@/components/ui/progress";
+import { Item } from '@radix-ui/react-accordion';
 
 
 
@@ -37,7 +38,7 @@ export const DashboardView = ({ insights }) => {
         name: range.role,
         min: range.min ? range.min / 1000 : 0,
         max: range.max ? range.max / 1000 : 0,
-        medium: range.medium ? range.medium / 1000 : 0,
+        median: range.median ? range.median / 1000 : 0,
     }))
 
     const getDemandLevelColor = (level) => {
@@ -87,7 +88,7 @@ export const DashboardView = ({ insights }) => {
             <Badge variant="outline">Last Updated: {lastUpdatedDate}</Badge>
         </div>
 
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+        < div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Market Outlook</CardTitle>
@@ -101,32 +102,34 @@ export const DashboardView = ({ insights }) => {
             </Card>
 
             <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Industry Growth</CardTitle>
-                    <TrendingUp className='h-4 w-4 text-muted-foreground' />
-                </CardHeader>
-                <CardContent>
-                    <div className='text-2xl font-bold'>{insights.growthRate.toFixed(1)}%
-                    </div>
-                    <Progress value={insights.growthRate} className="mt-2" />
-                </CardContent>
-            </Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Industry Growth
+            </CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {insights.growthRate.toFixed(1)}%
+            </div>
+            <Progress value={insights.growthRate} className="mt-2" />
+          </CardContent>
+        </Card>
 
-            <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Demand Level</CardTitle>
-                    <BriefcaseIcon className='h-4 w-4 text-muted-foreground' />
-                </CardHeader>
-                <CardContent>
-                    <div className='text-2xl font-bold'>{insights.demandLevel}
-                    </div>
-                    <div className={`h-2 w-full rounder-full mt-2 
-                    ${getDemandLevelColor(
-                        insights.demandLevel
-                    )}`}></div>
-
-                </CardContent>
-            </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Demand Level</CardTitle>
+            <BriefcaseIcon className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{insights.demandLevel}</div>
+            <div
+              className={`h-2 w-full rounded-full mt-2 ${getDemandLevelColor(
+                insights.demandLevel
+              )}`}
+            />
+          </CardContent>
+        </Card>
 
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -143,45 +146,79 @@ export const DashboardView = ({ insights }) => {
                     </div>
                 </CardContent>
             </Card>
+        </div>
 
+        <Card>
+            <CardHeader >
+                <CardTitle >Salary Ranges by role</CardTitle>
+                <CardDescription>
+                    Displaying minimum, median, and maximum salaries (in thousands)
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div className='h-[400px]'>
+                    <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                            data={salaryData}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip content={({ active, payload, label }) => {
+                                if (active && payload && payload.length) {
+                                    return (
+                                        <div className="bg-background border rounded-lg p-2 shadow-md">
+                                            <p className="font-medium">{label}</p>
+                                            {payload.map((item) => (
+                                                <p key={Item.name}>
+                                                    {item.name}: ${item.value}K
+                                                </p>
+                                            ))}
+                                        </div>
+                                    );
+                                }
+                                return null
+                            }}
+                            />
+                            <Bar dataKey="min" fill="#94a3b8" name="Min Salary (K)" />
+                            <Bar dataKey="median" fill="#64748b" name="Median Salary (K)" />
+                            <Bar dataKey="max" fill="#475569" name="Max Salary (K)" />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            </CardContent>
+        </Card>
 
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4  '>
             <Card>
                 <CardHeader >
-                    <CardTitle >Salary Ranges by role</CardTitle>
-                    <CardDescription>
-                        Displaying minimum, median, and maximum salaries (in thousands)
-                    </CardDescription>
+                    <CardTitle >Pivotal Industry Trends</CardTitle>
+                    <CardDescription>Emerging Trends Influencing the Industry</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className='h-[400px]'>
-                        <ResponsiveContainer width="100%" height="100%">
-                            <BarChart
-                                width={500}
-                                height={300}
-                                data={salaryData}
-                                margin={{
-                                    top: 5,
-                                    right: 30,
-                                    left: 20,
-                                    bottom: 5,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" />
-                                <YAxis />
-                                <Tooltip />
-                                <Bar
-                                    dataKey="pv"
-                                    fill="#8884d8"
-                                    activeBar={<Rectangle fill="pink" stroke="blue" />} />
-                                <Bar dataKey="uv" fill="#82ca9d" activeBar={<Rectangle fill="gold" stroke="purple" />} />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </div>
+                    <ul className='space-y-4'>
+                        {insights.keyTrends.map((trend, index) => (
+                            <li key={index} className='flex items-start space-x-2'>
+                                <div className='h-2 w-2 mt-2 rounded-2xl bg-primary' />
+                                <span>{trend}</span>
+                            </li>
+                        ))}
+                    </ul>
                 </CardContent>
             </Card>
 
+            <Card>
+                <CardHeader >
+                    <CardTitle >Pivotal Industry Trends</CardTitle>
+                    <CardDescription>Emerging Trends Influencing the Industry</CardDescription>
+                </CardHeader>
+                <CardContent>
+
+                </CardContent>
+            </Card>
         </div>
+
+
 
     </div>
 
