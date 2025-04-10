@@ -77,7 +77,7 @@ export async function getIndustryInsights() {
                 marketOutlook: insights.marketOutlook,
                 keyTrends: insights.keyTrends,
                 recommendedSkills: insights.recommendedSkills,
-                nextUpdate: new Date(Date.now() + 24 * 60 * 60 * 1000), // Update every 24 hours
+                nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Update every 24 hours
             },
             create: {
                 industry: user.industry,
@@ -88,8 +88,7 @@ export async function getIndustryInsights() {
                 marketOutlook: insights.marketOutlook,
                 keyTrends: insights.keyTrends,
                 recommendedSkills: insights.recommendedSkills,
-                nextUpdate: new Date(Date.now() + 24 * 60 * 60 * 1000),
-            },
+                nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),            },
         });
 
         return industryInsight;
