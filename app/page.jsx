@@ -31,9 +31,9 @@ export default function Home() {
             Powerful Features for Your Career Growth
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {features.map((feature, index) => (
+            {features.map((feature) => (
               <Card
-                key={index}
+                key={feature.id}
                 className="border-2 hover:border-primary transition-colors duration-300"
               >
                 <CardContent className="pt-6 text-center flex flex-col items-center">
