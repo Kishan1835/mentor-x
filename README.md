@@ -2,7 +2,7 @@
 
 Mentor-X is an AI-driven career advancement platform designed to help users enhance their professional skills and secure their dream jobs. The platform offers personalized guidance, interview preparation, and industry insights tailored to individual career paths.
 
-## Table of Contents
+## Table of Content
 
 - [Getting Started](#getting-started)
 - [Features](#features)
