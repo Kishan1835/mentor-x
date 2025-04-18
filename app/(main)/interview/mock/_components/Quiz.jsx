@@ -111,36 +111,36 @@ const quiz = () => {
             return (
               <div className="flex items-center space-x-2" key={index}>
                 <RadioGroupItem value={option} id={`option-${index}`} />
-                <Label htmlFor={`option-${option}`}>{option}</Label>
+                <Label key={`label-${index}`} htmlFor={`option-${option}`}>
+                  {option}
+                </Label>
               </div>
             );
           })}
         </RadioGroup>
 
-        {true && (
-          <showExplanation className="mt-4 p-4 bg-muted rounded-lg">
-            <p className="font-medium">Explanation</p>
-            <p className="text-muted-foreground-">{question.explanation}</p>
-          </showExplanation>
+        {showExplanation && (
+          <div className="mt-4 p-4 bg-muted rounded-lg">
+            <p className="font-medium">Explanation:</p>
+            <p className="text-muted-foreground">{question.explanation}</p>
+          </div>
         )}
       </CardContent>
       <CardFooter>
         {!showExplanation && (
           <Button
-            onClick={() => {
-              setShowExplanation(true);
-              variant = "outline";
-              disable = !answers[currentQuestion];
-            }}
+            onClick={() => setShowExplanation(true)}
+            variant="outline"
+            disabled={!answers[currentQuestion]}
           >
-            show Explaination
+            Show Explanation
           </Button>
         )}
 
         <Button
           onClick={handleNext}
           className="ml-auto"
-          disable={!answers[currentQuestion]}
+          disabled={!answers[currentQuestion]}
         >
           {currentQuestion < quizData.length - 1
             ? "Next Question"
