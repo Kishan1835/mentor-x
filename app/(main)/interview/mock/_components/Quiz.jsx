@@ -17,7 +17,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 
-const quiz = () => {
+export default function Quiz(){
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [showExplanation, setShowExplanation] = useState(false);
@@ -34,6 +34,8 @@ const quiz = () => {
     data: resultData,
     setData: setResultData,
   } = useFetch(saveQuizResults);
+
+  console.log(resultData);
 
   useEffect(() => {
     if (quizData) {
@@ -56,16 +58,60 @@ const quiz = () => {
     }
   };
 
+  // looping throught the users answers
+  const calculateScore = () => {
+    let correct = 0;
+    answers.forEach((answer, index) => {
+      if (answer === quizData[index].correctAnswer) {
+        correct++;
+      }
+    });
+    return (correct / quizData.length) * 100;
+  };
+
+  // saving the Users answers
   const finishQuiz = async () => {
-    const score = 0;
+    const score = calculateScore();
+
+    if (!quizData || !Array.isArray(quizData) || quizData.length === 0) {
+      console.error("Invalid quiz data:", quizData);
+      toast.error("Quiz data is invalid");
+      return;
+    }
+
+    if (!answers || !Array.isArray(answers) || answers.includes(null)) {
+      console.error("Invalid answers:", answers);
+      toast.error("Please answer all questions before finishing the quiz");
+      return;
+    }
+
+    if (isNaN(score)) {
+      console.error("Invalid score:", score);
+      toast.error("Score calculation failed");
+      return;
+    }
+
+    console.log("Payload being sent:", { quizData, answers, score }); // Debugging
+
     try {
       await saveQuizResultFn(quizData, answers, score);
       toast.success("Quiz Completed");
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error saving quiz results:", error);
+      toast.error(error.message || "Failed to save quiz results");
+    }
   };
 
   if (generatingQuiz) {
-    return <BarLoader className="mt-4" width={"100%"} color="grey" />;
+    return <BarLoader className="mt-4" width={"100%"} color="gray" />;
+  }
+
+  if (resultData) {
+    return (
+      <div className="mx-2">
+        <QuizResult result={resultData} onStartNew={startNewQuiz} />
+      </div>
+    );
   }
 
   if (!quizData) {
@@ -95,28 +141,22 @@ const quiz = () => {
     <Card className="mx-2">
       <CardHeader>
         <CardTitle>
-          {" "}
           Question {currentQuestion + 1} of {quizData.length}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-lg font-medium">{question.question}</p>
-
         <RadioGroup
-          className="space-y-2 "
           onValueChange={handleAnswer}
           value={answers[currentQuestion]}
+          className="space-y-2"
         >
-          {question.options.map((option, index) => {
-            return (
-              <div className="flex items-center space-x-2" key={index}>
-                <RadioGroupItem value={option} id={`option-${index}`} />
-                <Label key={`label-${index}`} htmlFor={`option-${option}`}>
-                  {option}
-                </Label>
-              </div>
-            );
-          })}
+          {question.options.map((option, index) => (
+            <div key={index} className="flex items-center space-x-2">
+              <RadioGroupItem value={option} id={`option-${index}`} />
+              <Label htmlFor={`option-${index}`}>{option}</Label>
+            </div>
+          ))}
         </RadioGroup>
 
         {showExplanation && (
@@ -126,7 +166,7 @@ const quiz = () => {
           </div>
         )}
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex justify-between">
         {!showExplanation && (
           <Button
             onClick={() => setShowExplanation(true)}
@@ -136,12 +176,14 @@ const quiz = () => {
             Show Explanation
           </Button>
         )}
-
         <Button
           onClick={handleNext}
+          disabled={!answers[currentQuestion] || savingResult}
           className="ml-auto"
-          disabled={!answers[currentQuestion]}
         >
+          {savingResult && (
+            <BarLoader className="mt-4" width={"100%"} color="gray" />
+          )}
           {currentQuestion < quizData.length - 1
             ? "Next Question"
             : "Finish Quiz"}
@@ -149,6 +191,4 @@ const quiz = () => {
       </CardFooter>
     </Card>
   );
-};
-
-export default quiz;
+}
