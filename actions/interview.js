@@ -59,7 +59,6 @@ export async function generateQuiz() {
 }
 
 export async function saveQuizResults(questions, answers, score) {
-
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
@@ -71,21 +70,22 @@ export async function saveQuizResults(questions, answers, score) {
 
   const questionResults = questions.map((q, index) => ({
     question: q.question,
-    answer: q.correctAnswers,
+    answer: q.correctAnswer,
     userAnswers: answers[index],
     isCorrect: q.correctAnswer === answers[index],
-    explanation: q.explanation
-  }))
+    explanation: q.explanation,
+  }));
 
-  const wrongAnswers = questionResults.filter((q) => !q.isCorrect)
-  let imporvementTip = null;
-  if (!wrongAnswers.length > 0) {
+  const wrongAnswers = questionResults.filter((q) => !q.isCorrect);
+  let improvementTip = null;
+
+  if (wrongAnswers.length > 0) {
     const wrongQuestionsText = wrongAnswers
       .map(
         (q) =>
-          `Question: "${q.question}"\nQuestion Answer:"${q.answer}"\nUser AnwerL "${q.userAnswers}"`
+          `Question: "${q.question}"\nCorrect Answer: "${q.answer}"\nUser Answer: "${q.userAnswers}"`
       )
-      .join("\n\n")
+      .join("\n\n");
 
     const improvementPrompt = `
       The user got the following ${user.industry} technical interview questions wrong:
@@ -98,30 +98,28 @@ export async function saveQuizResults(questions, answers, score) {
       Don't explicitly mention the mistakes, instead focus on what to learn/practice.
     `;
 
-
     try {
-      const result = await model.generateContent(prompt)
+      const result = await model.generateContent(improvementPrompt);
       const response = result.response;
-      imporvementTip = response.text().trim()
+      improvementTip = response.text().trim();
     } catch (error) {
-      console.log("Error generating imporvenmnet tip: ", error);
+      console.log("Error generating improvement tip: ", error);
     }
   }
 
   try {
-    const assesment = await db.assestment.create({
-      date: {
+    const assessment = await db.Assessment.create({ // Use the correct model name
+      data: {
         userId: user.id,
-        quizScor: score,
+        quizScore: score,
         questions: questionResults,
         category: "Technical",
-        imporvementTip
-      }
-    })
-    return (assesment)
+        improvementTip,
+      },
+    });
+    return assessment;
   } catch (e) {
-    console.log("Error saving the quiz result");
-    throw new Error("Failed to save the result")
-
+    console.log("Error saving the quiz result:", e);
+    throw new Error("Failed to save the result");
   }
 }
